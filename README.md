@@ -39,4 +39,9 @@ By default this uses the server name from your server.properties file, so make s
 Simply drop the entire ServerListMessageOfTheDay folder into /plugins/CommandHelper/LocalPackages and then run /reloadaliases in game or console to load the scripts. You do not have to /reloadaliases after editing the yml file as it is read when the ping occures, not at startup.
 
 ### RandomRespawnWorld
-This is a short series of if statements that change the player's spawn location to the nether based on a coin flip. Use the permission node 'RandomRespawnWorld.Safety' if you want some players not to have to deal with that. Simply drop the entire RandomRespawnWorld forlder into /plugins/CommandHelper/LocalPackages and then run /reloadaliases in game or console to load the scripts. You do not have to /reloadaliases after editing the yml file as it is read when the ping occures, not at startup.
+This is a short series of if statements that change the player's spawn location to the nether based on a coin flip. Use the permission node 'RandomRespawnWorld.Safety' if you want some players not to have to deal with that. Simply drop the entire RandomRespawnWorld folder into /plugins/CommandHelper/LocalPackages and then run /reloadaliases in game or console to load the scripts. You do not have to /reloadaliases after editing the yml file as it is read when the ping occures, not at startup.
+
+### DeathBans
+This script works with any plugin which uses a tempban command IF YOU MAKE SURE THAT THE TEMPBAN COMMAND IS CORRECT IN THE CODE.
+If you don't have a tempban command, this script will ban the player normally and schedule an unban for 24 hours later. The unban checker runs every 5 minutes, so the longest a player should ever be banned is for 24 hours and 5 minutes.
+Simply drop the entire DeathBans folder into /plugins/CommandHelper/LocalPackages and then run /reloadaliases in game or console to load the scripts. You do not have to /reloadaliases after editing the yml file as it is read when the ping occures, not at startup.
