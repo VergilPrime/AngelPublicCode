@@ -1,15 +1,15 @@
 proc _fix_stupid_faces(@path){
-    _arm("Fixing stupid faces in path : ".color("a").@path);
+    msg("Fixing stupid faces in path : ".color("a").@path);
     @filenames = list_files(@path);
     @count = 0;
     foreach(@filename in @filenames){
         @array = split('.',@filename);
         @last = @array[array_size(@array) - 1];
         if(@last === "json"){
-            _arm("  File: ".color("6").@filename);
+            msg("  File: ".color("6").@filename);
             @changed = false;
             @contents = json_decode(read(@path.@filename));
-            _arm("    Has ".array_size(@contents["elements"])." elements.");
+            msg("    Has ".array_size(@contents["elements"])." elements.");
             foreach(@eindex:@element in @contents["elements"]){
                 foreach(@facename:@face in @element["faces"]){
                     if(@face["uv"] === array(0,0,0,0)){
@@ -52,13 +52,13 @@ register_command("resourcepack",associative_array(
                 },
                 "exit":closure(@exitcode){
                     if(!@exitcode){
-                        _arm("Copied files into Oraxen pack.");
-                        _arm("Correcting stupid faces.");
+                        msg("Copied files into Oraxen pack.");
+                        msg("Correcting stupid faces.");
 
                         @path = "../../../Oraxen/pack/assets/modelengine/models/";
                         @count = _fix_stupid_faces(@path);
-                        _arm("Fixed @count stupid faces.");
-                        _arm("Reloading Oraxen pack.");
+                        msg("Fixed @count stupid faces.");
+                        msg("Reloading Oraxen pack.");
                         run("/o reload pack");
                     }else{
                         _are("Copying ModelEngine pack to Oraxen failed with error code @exitcode.")
