@@ -73,38 +73,33 @@ register_command("resourcepack",associative_array(
     "permission":"admintools.resourcepack",
     "executor":closure(@alias,@sender,@args){
         
-        @plugins = "Your_Server_Directory/plugins";
+        // Configure your directories here without following slashes
+        @plugins = "../../..";
+        @modelengine_dir = "ModelEngine_Beta";
+        @oraxen_dir = "Oraxen";
         
         // ModelEngine reload command, generates fresh pack assets.
         run("/meg reload");
         
         // We wait a second before we do anything else since CommandHelper doesn't know when ModelEngine is finished.
         set_timeout(1000,closure(){
-            // I used a shell command (Linux) to copy the directory but in hindsight I should probably use copy_file()
-            shell_adv("cp -R \"@{plugins}/ModelEngine_Beta/resource pack/assets\" \"@{plugins}/Oraxen/pack/\"",associative_array(
-                "subshell":true,
-                "workingDir":"@{plugins}/ModelEngine_Beta/",
-                "stdout":closure(@output){
-                    msg(@sender,@output)
-                },
-                "stderr":closure(@output){
-                    msg(@sender,@output)
-                },
-                "exit":closure(@exitcode){
-                    if(!@exitcode){
-                        msg("Copied files into Oraxen pack.");
-                        msg("Correcting stupid faces.");
 
-                        @path = "../../../Oraxen/pack/assets/modelengine/models/";
-                        @count = _fix_stupid_faces(@path);
-                        msg("Fixed @count stupid faces.");
-                        msg("Reloading Oraxen pack.");
-                        run("/o reload pack");
-                    }else{
-                        _are("Copying ModelEngine pack to Oraxen failed with error code @exitcode.")
-                    }
-                }
-            ));
+            // Wipe the Oraxen/pack/assets/modelengine directory to get rid of any lingering files from removed models
+            delete_file("@plugins/@oraxen_dir/pack/assets/modelengine");
+
+            // Copy the entire ModelEngine/resource pack/assets directory to Oraxen/pack/assets, this includes overwriting
+            // the leather_horse_armor.json which ModelEngine assigns models to.
+            copy_file("@plugins/@modelengine_dir/resource pack/assets", "@plugins/@oraxen_dir/pack/assets");
+            
+            msg("Copied files into Oraxen pack, Correcting stupid faces.");
+
+            //Run the above procedure to fix stupid faces and return the amount of faces fixed for cheekyness.
+            @count = _fix_stupid_faces("@plugins/@oraxen_dir/pack/assets/modelengine/models/");
+
+            msg("Fixed @count stupid faces, Reloading Oraxen pack.");
+
+            // Reload the pack and automagically resend it to everyone online.
+            run("/o reload pack");
         })
     }
 ))
