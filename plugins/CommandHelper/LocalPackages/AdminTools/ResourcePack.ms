@@ -1,3 +1,10 @@
+/////////////////
+//// READ ME ////
+/////////////////
+// This code relies on CHFiles which adds list_files(), delete_file(), and copy_file().
+// Download CHFiles here: https://letsbuild.net/jenkins/job/CHFiles/
+// Add CHFiles to server_directory/plugins/CommandHelper/extensions, then restart your server.
+
 // Procedure to recursively fix stupid faces in a directory.
 // Stupid faces are ones with "0,0,0,0" as UV coordinates, in other words nothing.
 // Since BlockBench exports these into it's bbmodel files and ModelEngine reads them
