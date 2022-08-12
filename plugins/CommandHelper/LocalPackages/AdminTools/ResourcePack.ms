@@ -84,6 +84,7 @@ register_command("resourcepack",associative_array(
         @plugins = "../../..";
         @modelengine_dir = "ModelEngine_Beta";
         @oraxen_dir = "Oraxen";
+        @model_gen_namespace = yml_decode(read("@plugins/@modelengine_dir/config.yml"))["Model-Generator"]["Namespace"];;
         
         // ModelEngine reload command, generates fresh pack assets.
         run("/meg reload");
@@ -92,7 +93,10 @@ register_command("resourcepack",associative_array(
         set_timeout(1000,closure(){
 
             // Wipe the Oraxen/pack/assets/modelengine directory to get rid of any lingering files from removed models
-            delete_file("@plugins/@oraxen_dir/pack/assets/modelengine");
+            // Skip if the Namespace is minecraft.
+            if(@model_gen_namespace != "minecraft"){
+                delete_file("@plugins/@oraxen_dir/pack/assets/modelengine");
+            }
 
             // Copy the entire ModelEngine/resource pack/assets directory to Oraxen/pack/assets, this includes overwriting
             // the leather_horse_armor.json which ModelEngine assigns models to.
