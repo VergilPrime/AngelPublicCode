@@ -1,10 +1,3 @@
-/////////////////
-//// READ ME ////
-/////////////////
-// This code relies on CHFiles which adds list_files(), delete_file(), and copy_file().
-// Download CHFiles here: https://letsbuild.net/jenkins/job/CHFiles/
-// Add CHFiles to server_directory/plugins/CommandHelper/extensions, then restart your server.
-
 // Procedure to recursively fix stupid faces in a directory.
 // Stupid faces are ones with "0,0,0,0" as UV coordinates, in other words nothing.
 // Since BlockBench exports these into it's bbmodel files and ModelEngine reads them
@@ -81,10 +74,10 @@ register_command("resourcepack",associative_array(
     "executor":closure(@alias,@sender,@args){
         
         // Configure your directories here without following slashes
+        // @plugins = "Your_Server_Directory/plugins";
         @plugins = "../../..";
         @modelengine_dir = "ModelEngine_Beta";
         @oraxen_dir = "Oraxen";
-        @model_gen_namespace = yml_decode(read("@plugins/@modelengine_dir/config.yml"))["Model-Generator"]["Namespace"];;
         
         // ModelEngine reload command, generates fresh pack assets.
         run("/meg reload");
@@ -93,10 +86,7 @@ register_command("resourcepack",associative_array(
         set_timeout(1000,closure(){
 
             // Wipe the Oraxen/pack/assets/modelengine directory to get rid of any lingering files from removed models
-            // Skip if the Namespace is minecraft.
-            if(@model_gen_namespace != "minecraft"){
-                delete_file("@plugins/@oraxen_dir/pack/assets/modelengine");
-            }
+            delete_file("@plugins/@oraxen_dir/pack/assets/modelengine");
 
             // Copy the entire ModelEngine/resource pack/assets directory to Oraxen/pack/assets, this includes overwriting
             // the leather_horse_armor.json which ModelEngine assigns models to.
